@@ -2,7 +2,6 @@ import React from "react";
 import {
   Image,
   Text,
-  StyleSheet,
   View,
   ScrollView,
   TouchableOpacity,
@@ -10,19 +9,27 @@ import {
   Alert,
 } from "react-native";
 import { BlurView } from "expo-blur";
-
 import { useNavigation } from "@react-navigation/native";
 
-import { auth, signIn, createUser } from "../config/firebase";
+import { auth, signIn, createUser } from "../services/firebase";
 
-import { styles } from "./login.style";
+import Shapes from "../components/background/Shapes";
+import { styles } from "./auth.style";
 
 const LoginScreen = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const navigation = useNavigation();
+  const [isLogin, setIsLogin] = React.useState(true);
+  const title = isLogin ? "LogIn" : "Create Account";
+  const message = isLogin
+    ? "Don't you have an account?"
+    : "Do you have an account?";
+  const messageAction = isLogin ? "Register" : "Login";
+  const bgBtnLogin = isLogin
+    ? { backgroundColor: "#00CFEB90" }
+    : { backgroundColor: "#6792F090" };
 
-  const uri = "https://ak.picdn.net/shutterstock/videos/1060308725/thumb/1.jpg";
   const profilePicture = "https://randomuser.me/api/portraits/women/32.jpg";
 
   const handleCreateAccount = () => {
@@ -51,38 +58,18 @@ const LoginScreen = () => {
       });
   };
 
+  const handlerAuth = () => {
+    isLogin ? handleSignIn() : handleCreateAccount(); // TODO dispatch action
+  };
+
+  const handleChangeAuth = () => {
+    setIsLogin(!isLogin);
+    console.log("login changed", isLogin);
+  };
+
   return (
     <View style={styles.container}>
-      <Image source={{ uri }} style={[styles.image, StyleSheet.absoluteFill]} />
-      <View
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: "purple",
-          position: "absolute",
-        }}
-      ></View>
-      <View
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: "blue",
-          top: 120,
-          position: "absolute",
-          transform: [{ rotate: "25deg" }],
-        }}
-      ></View>
-      <View
-        style={{
-          width: 100,
-          height: 100,
-          backgroundColor: "red",
-          bottom: 120,
-          position: "absolute",
-          borderRadius: 50,
-          transform: [{ rotate: "50deg" }],
-        }}
-      ></View>
+      <Shapes />
       <ScrollView
         contentContainerStyle={{
           flex: 1,
@@ -92,7 +79,7 @@ const LoginScreen = () => {
           justifyContent: "center",
         }}
       >
-        <BlurView intensity={100}>
+        <BlurView intensity={100} style={styles.blurView}>
           <View style={styles.login}>
             <Image
               source={{ uri: profilePicture }}
@@ -120,20 +107,14 @@ const LoginScreen = () => {
               />
             </View>
             <TouchableOpacity
-              onPress={handleSignIn}
-              style={[styles.button, { backgroundColor: "#00CFEB90" }]}
+              onPress={handlerAuth}
+              style={[styles.button, bgBtnLogin]}
             >
-              <Text style={{ fontSize: 17, fontWeight: "400", color: "white" }}>
-                Login
-              </Text>
+              <Text style={styles.text}>{title}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={handleCreateAccount}
-              style={[styles.button, { backgroundColor: "#6792F090" }]}
-            >
-              <Text style={{ fontSize: 17, fontWeight: "400", color: "white" }}>
-                Create Account
-              </Text>
+            <Text style={styles.textWithoutAccount}>{message}</Text>
+            <TouchableOpacity onPress={handleChangeAuth}>
+              <Text style={styles.btnWithoutAccount}>{messageAction}</Text>
             </TouchableOpacity>
           </View>
         </BlurView>
