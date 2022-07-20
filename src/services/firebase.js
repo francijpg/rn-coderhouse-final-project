@@ -1,4 +1,8 @@
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { getApp, initializeApp } from "firebase/app";
 
 import Constants from "expo-constants";
@@ -24,5 +28,5 @@ function createFirebaseApp(config) {
 const firebaseApp = createFirebaseApp(firebaseConfig);
 
 export const auth = getAuth(firebaseApp);
-export const signIn = signInWithEmailAndPassword;
-export const createUser = createUserWithEmailAndPassword;
+export const fbSignIn = signInWithEmailAndPassword;
+export const fbSignUp = createUserWithEmailAndPassword;
