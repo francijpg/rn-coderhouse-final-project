@@ -1,24 +1,25 @@
 import React from "react";
-import {
-  Image,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-  TextInput,
-  Alert,
-} from "react-native";
+import { Image, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { BlurView } from "expo-blur";
 import { useNavigation } from "@react-navigation/native";
+import { useDispatch, useSelector } from "react-redux";
 
-import { auth, signIn, createUser } from "../services/firebase";
+import { signIn, signUp } from "../store/actions/auth.actions";
+import { onInputChange, onFocusOut } from "../utils/forms";
+import { initialState, FormReducer } from "../store/reducers/form.reducer";
+
+import { styles } from "./auth.style";
+import { colors } from "../constants/colors";
 
 import Shapes from "../components/background/Shapes";
-import { styles } from "./auth.style";
+import { Input } from "../components/index";
 
-const LoginScreen = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+const AuthScreen = () => {
+  const [formState, dispatchFormState] = React.useReducer(
+    FormReducer,
+    initialState
+  );
+  const dispatch = useDispatch();
   const navigation = useNavigation();
   const [isLogin, setIsLogin] = React.useState(true);
   const title = isLogin ? "LogIn" : "Create Account";
@@ -32,39 +33,28 @@ const LoginScreen = () => {
 
   const profilePicture = "https://randomuser.me/api/portraits/women/32.jpg";
 
-  const handleCreateAccount = () => {
-    createUser(auth, email, password)
-      .then((userCredential) => {
-        console.log("Account created!");
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        console.log(error);
-        Alert.alert(error.message);
-      });
-  };
-
-  const handleSignIn = () => {
-    signIn(auth, email, password)
-      .then((userCredential) => {
-        console.log("Signed in!");
-        const user = userCredential.user;
-        console.log(user);
-        navigation.navigate("Home");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
   const handlerAuth = () => {
-    isLogin ? handleSignIn() : handleCreateAccount(); // TODO dispatch action
+    dispatch(
+      isLogin
+        ? signIn(formState.email.value, formState.password.value)
+        : signUp(formState.email.value, formState.password.value)
+    );
+    // const userId = useSelector((state) => state.auth.userId);
+    // userId && navigation.navigate("Home");
+    // TODO: improve the way to navigate to Home
+    navigation.navigate("Home");
   };
 
   const handleChangeAuth = () => {
     setIsLogin(!isLogin);
-    console.log("login changed", isLogin);
+  };
+
+  const onHandleChange = (text, type) => {
+    onInputChange(type, text, dispatchFormState, formState);
+  };
+
+  const onBlurInput = (text, type) => {
+    onFocusOut(type, text, dispatchFormState, formState);
   };
 
   return (
@@ -85,27 +75,34 @@ const LoginScreen = () => {
               source={{ uri: profilePicture }}
               style={styles.profilePicture}
             />
-            <View>
-              <Text style={{ fontSize: 17, fontWeight: "400", color: "white" }}>
-                E-mail
-              </Text>
-              <TextInput
-                onChangeText={(text) => setEmail(text)}
-                style={styles.input}
-                placeholder="example@gmail.com"
-              />
-            </View>
-            <View>
-              <Text style={{ fontSize: 17, fontWeight: "400", color: "white" }}>
-                Password
-              </Text>
-              <TextInput
-                onChangeText={(text) => setPassword(text)}
-                style={styles.input}
-                placeholder="password"
-                secureTextEntry={true}
-              />
-            </View>
+            <Input
+              placeholder="example@gmail.com"
+              placeholderTextColor={colors.text}
+              autoCapitalize="none"
+              autoCorrect={false}
+              keyboardType="email-address"
+              onChangeText={(text) => onHandleChange(text, "email")}
+              onBlur={(e) => onBlurInput(e.nativeEvent.text, "email")}
+              value={formState.email.value}
+              hasError={formState.email.hasError}
+              error={formState.email.error}
+              touched={formState.email.touched}
+              label="Email"
+            />
+            <Input
+              placeholder="********"
+              placeholderTextColor={colors.text}
+              autoCapitalize="none"
+              autoCorrect={false}
+              secureTextEntry={true}
+              onChangeText={(text) => onHandleChange(text, "password")}
+              onBlur={(e) => onBlurInput(e.nativeEvent.text, "password")}
+              value={formState.password.value}
+              hasError={formState.password.hasError}
+              error={formState.password.error}
+              touched={formState.password.touched}
+              label="Password"
+            />
             <TouchableOpacity
               onPress={handlerAuth}
               style={[styles.button, bgBtnLogin]}
@@ -123,4 +120,4 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default AuthScreen;
