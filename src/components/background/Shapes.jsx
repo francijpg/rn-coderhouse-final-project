@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import BgImage from "./BgImage";
 
 const Background = () => {
