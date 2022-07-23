@@ -6,7 +6,7 @@ export const initialState = {
   isFormValid: false,
 };
 
-export const FormReducer = (state, action) => {
+export const formReducer = (state, action) => {
   switch (action.type) {
     case UPDATED_FORM:
       const { name, value, hasError, error, touched, isFormValid } =
