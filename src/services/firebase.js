@@ -2,6 +2,7 @@ import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 import { getApp, initializeApp } from "firebase/app";
 
@@ -30,3 +31,4 @@ const firebaseApp = createFirebaseApp(firebaseConfig);
 export const auth = getAuth(firebaseApp);
 export const fbSignIn = signInWithEmailAndPassword;
 export const fbSignUp = createUserWithEmailAndPassword;
+export const fbSignOut = signOut;
