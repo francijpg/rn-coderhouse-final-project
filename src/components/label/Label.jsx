@@ -8,7 +8,7 @@ const Label = ({ children, style, label, subLabel, subLabelStyle }) => {
       <Text style={[styles.label, style]}>{label}</Text>
       {children}
       {subLabel && (
-        <Text style={[styles.subLabel, subLabelStyle]}>{subLabel}</Text> // TODO remove unnecessary styles
+        <Text style={[styles.subLabel, subLabelStyle]}>{subLabel}</Text> // TODO: remove unnecessary styles
       )}
     </View>
   );
