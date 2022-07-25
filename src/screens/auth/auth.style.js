@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../constants/colors";
+import { colors } from "../../constants/colors";
 
 export const styles = StyleSheet.create({
   container: {
@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
   },
   login: {
     width: 350,
-    height: 500,
+    height: 510,
     borderColor: colors.white,
     borderWidth: 2,
     borderRadius: 20,
@@ -29,17 +29,6 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     marginVertical: 30,
   },
-  // input: {
-  //   width: 250,
-  //   height: 40,
-  //   borderColor: colors.white,
-  //   borderWidth: 2,
-  //   borderRadius: 10,
-  //   padding: 10,
-  //   marginVertical: 10,
-  //   backgroundColor: colors.whiteOpacity,
-  //   marginBottom: 20,
-  // },
   button: {
     width: 250,
     height: 40,
@@ -58,11 +47,11 @@ export const styles = StyleSheet.create({
   textWithoutAccount: {
     fontSize: 14,
     color: colors.white,
-    marginTop: 20,
+    marginTop: 15,
   },
   btnWithoutAccount: {
     fontSize: 14,
-    // fontFamily: "Lato-Bold",
+    fontFamily: "Lato-Bold",
     color: colors.white,
     textAlign: "center",
   },

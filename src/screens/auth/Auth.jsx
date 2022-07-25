@@ -1,26 +1,34 @@
 import React from "react";
-import { Image, Text, View, ScrollView, TouchableOpacity } from "react-native";
+import {
+  Image,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import { BlurView } from "expo-blur";
-import { useNavigation } from "@react-navigation/native";
 import { useDispatch, useSelector } from "react-redux";
 
-import { signIn, signUp } from "../store/actions/auth.actions";
-import { onInputChange, onFocusOut } from "../utils/forms";
-import { initialState, FormReducer } from "../store/reducers/form.reducer";
+import {
+  signIn,
+  signUp,
+  hideAuthError,
+} from "../../store/actions/auth.actions";
+import { onInputChange, onFocusOut } from "../../utils/forms";
+import { initialState, formReducer } from "../../store/reducers/form.reducer";
 
+import { colors } from "../../constants/colors";
 import { styles } from "./auth.style";
-import { colors } from "../constants/colors";
 
-import Shapes from "../components/background/Shapes";
-import { Input } from "../components/index";
+import { Shapes, Input } from "../../components";
 
 const AuthScreen = () => {
   const [formState, dispatchFormState] = React.useReducer(
-    FormReducer,
+    formReducer,
     initialState
   );
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const [isLogin, setIsLogin] = React.useState(true);
   const title = isLogin ? "LogIn" : "Create Account";
   const message = isLogin
@@ -32,6 +40,7 @@ const AuthScreen = () => {
     : { backgroundColor: "#6792F090" };
 
   const profilePicture = "https://randomuser.me/api/portraits/women/32.jpg";
+  const auth = useSelector((state) => state.auth);
 
   const handlerAuth = () => {
     dispatch(
@@ -39,10 +48,6 @@ const AuthScreen = () => {
         ? signIn(formState.email.value, formState.password.value)
         : signUp(formState.email.value, formState.password.value)
     );
-    // const userId = useSelector((state) => state.auth.userId);
-    // userId && navigation.navigate("Home");
-    // TODO: improve the way to navigate to Home
-    navigation.navigate("Home");
   };
 
   const handleChangeAuth = () => {
@@ -56,6 +61,19 @@ const AuthScreen = () => {
   const onBlurInput = (text, type) => {
     onFocusOut(type, text, dispatchFormState, formState);
   };
+
+  const handleAuthMessage = () => {
+    dispatch(hideAuthError());
+  };
+
+  if (auth.authError !== null) {
+    Alert.alert(
+      "Error",
+      auth.authError,
+      [{ text: "OK", onPress: handleAuthMessage }],
+      { cancelable: false }
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -82,7 +100,7 @@ const AuthScreen = () => {
               autoCorrect={false}
               keyboardType="email-address"
               onChangeText={(text) => onHandleChange(text, "email")}
-              onBlur={(e) => onBlurInput(e.nativeEvent.text, "email")}
+              onEndEditing={(e) => onBlurInput(e.nativeEvent.text, "email")}
               value={formState.email.value}
               hasError={formState.email.hasError}
               error={formState.email.error}
@@ -96,7 +114,7 @@ const AuthScreen = () => {
               autoCorrect={false}
               secureTextEntry={true}
               onChangeText={(text) => onHandleChange(text, "password")}
-              onBlur={(e) => onBlurInput(e.nativeEvent.text, "password")}
+              onEndEditing={(e) => onBlurInput(e.nativeEvent.text, "password")}
               value={formState.password.value}
               hasError={formState.password.hasError}
               error={formState.password.error}
