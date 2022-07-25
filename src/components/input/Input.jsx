@@ -9,7 +9,7 @@ const Input = ({
   value,
   onChangeText,
   onFocus,
-  onBlur,
+  onEndEditing,
   maxLegth,
   placeholder,
   placeholderTextColor,
@@ -29,7 +29,7 @@ const Input = ({
           value={value}
           onChangeText={onChangeText}
           onFocus={onFocus}
-          onBlur={onBlur}
+          onEndEditing={onEndEditing}
           maxLength={maxLegth}
           placeholder={placeholder}
           placeholderTextColor={placeholderTextColor}
