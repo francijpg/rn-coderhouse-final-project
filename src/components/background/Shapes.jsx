@@ -1,5 +1,6 @@
 import React from "react";
 import { View } from "react-native";
+import { colors } from "../../constants/colors";
 import BgImage from "./BgImage";
 
 const Background = () => {
@@ -10,7 +11,7 @@ const Background = () => {
         style={{
           width: 100,
           height: 100,
-          backgroundColor: "purple",
+          backgroundColor: colors.primary,
           position: "absolute",
         }}
       ></View>
@@ -18,7 +19,7 @@ const Background = () => {
         style={{
           width: 100,
           height: 100,
-          backgroundColor: "blue",
+          backgroundColor: colors.primary,
           top: 120,
           position: "absolute",
           transform: [{ rotate: "45deg" }],
@@ -28,7 +29,7 @@ const Background = () => {
         style={{
           width: 100,
           height: 100,
-          backgroundColor: "red",
+          backgroundColor: colors.primary,
           bottom: 120,
           position: "absolute",
           borderRadius: 50,
