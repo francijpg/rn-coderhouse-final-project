@@ -21,6 +21,6 @@ export const styles = StyleSheet.create({
   helperText: {
     fontFamily: "Lato-Bold",
     fontSize: 12,
-    color: colors.error,
+    color: colors.primary,
   },
 });
