@@ -1,5 +1,5 @@
 export const colors = {
-  primary: "#310A31",
+  primary: "#4B0082",
   secondary: "#847996",
   text: "#212121",
   background: "#ffffff",
@@ -8,5 +8,6 @@ export const colors = {
   whiteOpacity: "#ffffff90",
   black: "#000000",
   gray: "#f3f3f3",
+  lightGray: '#FAFAFA',
   error: "#ff0000",
 };
