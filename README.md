@@ -1,23 +1,23 @@
-# rn-coderhouse-final-project
+# Chat-App
 
-### This is a simple chat application for the final project of the react native course taught by the coderhouse platform. At a technical and functional level, its characteristics include:
+## This is a simple chat application for the final project of the react native course taught by the coderhouse platform. At a technical and functional level, its characteristics include:
 
 ### Functional summary
 
 1. Identify and register a user in the app through their email.
-2. Participate in an open chat, which identifies the origin from different accounts
+2. Participate in an open chat, which identifies the origin from different accounts.
 3. Allows you to use your device's camera to update your profile picture.
 
 ### Technical summary
 
-1. Has data persistence with AsyncStorage
-2. Reusable components
-3. State handling with Redux
-4. Use of custom Hooks
+1. Has data persistence with AsyncStorage.
+2. Reusable components.
+3. State handling with Redux.
+4. Use of custom Hooks.
 5. BAAS using Firebase Authentication, Storage and FireStore services.
-6. API consumption
-7. Navigation and privacy control between app views thanks to React Navigation
-8. Handling environment variables
+6. API consumption.
+7. Navigation and privacy control between app views thanks to React Navigation.
+8. Handling environment variables.
 9. Use of design patterns such as: mediator and dependency injection.
 
 ##  IMPORTANT
