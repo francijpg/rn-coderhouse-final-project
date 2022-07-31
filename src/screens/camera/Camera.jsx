@@ -2,10 +2,14 @@ import React from "react";
 import { Text, View, Image } from "react-native";
 import { Camera, CameraType } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
+import { useDispatch } from "react-redux";
 
 import { ButtonIcon } from "../../components";
 import { colors } from "../../constants/colors";
 import { styles } from "./camera.style";
+import { useAuth } from "../../hooks/useAuth";
+import { addUserProfilePhoto } from "../../services/firebase";
+import { uploadProfileImage } from "../../store/actions/auth.actions";
 
 export default function CameraScreen({ navigation }) {
   const [hasCameraPermission, setHasCameraPermission] = React.useState(null);
@@ -16,6 +20,8 @@ export default function CameraScreen({ navigation }) {
   const flashColor = Camera.Constants.FlashMode.off
     ? colors.gray
     : colors.white;
+  const currentUser = useAuth();
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     (async () => {
@@ -39,10 +45,12 @@ export default function CameraScreen({ navigation }) {
   const savePicture = async () => {
     if (image) {
       try {
-        await MediaLibrary.createAssetAsync(image);
-        alert("Picture saved! 🎉");
+        const data = await MediaLibrary.createAssetAsync(image);
+        await addUserProfilePhoto(data, currentUser);
         setImage(null);
-        navigation.navigate("HomeStack");
+        dispatch(uploadProfileImage());
+        alert("Picture saved! 🎉");
+        navigation.navigate("Profile");
       } catch (error) {
         console.error(`savePicture error: ${error}`);
       }
@@ -52,10 +60,10 @@ export default function CameraScreen({ navigation }) {
   if (hasCameraPermission === false) {
     return (
       <View style={styles.noPermission}>
-        <Text>Sin accesso a la camara</Text>
+        <Text>No access to camera</Text>
         <ButtonIcon
           title="Ir al Home"
-          onPress={() => navigation.navigate("HomeStack")}
+          onPress={() => navigation.navigate("Profile")}
           icon="arrow-left"
           color={colors.primary}
         />

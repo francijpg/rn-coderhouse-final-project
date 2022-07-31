@@ -1,41 +1,62 @@
 import { authTypes } from "../types/auth.types";
 
-const { SIGN_UP, SIGN_IN, SIGN_OUT, RESTORE_TOKEN } = authTypes;
+const {
+  SIGN_UP,
+  SIGN_IN,
+  SIGN_OUT,
+  RESTORE_TOKEN,
+  SHOW_AUTH_ERROR,
+  HIDE_AUTH_ERROR,
+  UPLOAD_PROFILE_IMAGE,
+} = authTypes;
 
 const initialState = {
+  user: null,
   userToken: null,
-  userId: null,
   loading: true,
+  authError: null,
+  userProfileImage: null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case SIGN_UP:
+    case SIGN_IN:
       return {
         ...state,
+        user: action.user,
         userToken: action.userToken,
-        userId: action.userId,
-        loading: false,
-      };
-    case SIGN_IN: // TODO: mix this with SIGN_UP
-      return {
-        ...state,
-        userToken: action.userToken,
-        userId: action.userId,
         loading: false,
       };
     case SIGN_OUT:
       return {
         ...state,
+        user: null,
         userToken: null,
-        userId: null,
         loading: false,
       };
     case RESTORE_TOKEN:
       return {
         ...state,
         userToken: action.userToken,
-        userId: null, // TODO: get userId from token or remove it
+        loading: false,
+      };
+    case SHOW_AUTH_ERROR:
+      return {
+        ...state,
+        authError: action.authError,
+        loading: false,
+      };
+    case HIDE_AUTH_ERROR:
+      return {
+        ...state,
+        authError: null,
+        loading: false,
+      };
+    case UPLOAD_PROFILE_IMAGE:
+      return {
+        ...state,
+        userProfileImage: action.userProfileImage,
         loading: false,
       };
     default:

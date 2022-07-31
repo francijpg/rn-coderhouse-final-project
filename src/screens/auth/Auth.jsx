@@ -39,7 +39,6 @@ const AuthScreen = () => {
     ? { backgroundColor: "#00CFEB90" }
     : { backgroundColor: "#6792F090" };
 
-  const profilePicture = "https://randomuser.me/api/portraits/women/32.jpg";
   const auth = useSelector((state) => state.auth);
 
   const handlerAuth = () => {
@@ -90,7 +89,7 @@ const AuthScreen = () => {
         <BlurView intensity={100} style={styles.blurView}>
           <View style={styles.login}>
             <Image
-              source={{ uri: profilePicture }}
+              source={require("../../assets/images/profile.jpg")}
               style={styles.profilePicture}
             />
             <Input

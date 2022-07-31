@@ -3,9 +3,10 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
   button: {
     height: 40,
-    flexDirection: "row", // TODO: remove flex dependencies
+    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 15,
   },
   text: {
     fontSize: 16,

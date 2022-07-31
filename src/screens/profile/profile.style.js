@@ -12,4 +12,12 @@ export const styles = StyleSheet.create({
     fontFamily: "Lato-Bold",
     color: colors.white,
   },
+  profilePicture: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    borderColor: colors.white,
+    borderWidth: 1,
+    marginVertical: 30,
+  },
 });

@@ -1,25 +1,55 @@
 import { authTypes } from "../types/auth.types";
-const { SIGN_UP, SIGN_IN, SIGN_OUT, RESTORE_TOKEN } = authTypes;
+import { messages } from "../../constants/messages";
 
-import { auth, fbSignUp, fbSignIn, fbSignOut } from "../../services/firebase";
+import {
+  auth,
+  fbSignUp,
+  fbSignIn,
+  fbSignOut,
+  addUserToDatabase,
+} from "../../services/firebase";
 import { setToken, deleteToken } from "../../utils/token";
+
+const {
+  SIGN_UP,
+  SIGN_IN,
+  SIGN_OUT,
+  RESTORE_TOKEN,
+  SHOW_AUTH_ERROR,
+  HIDE_AUTH_ERROR,
+  UPLOAD_PROFILE_IMAGE,
+} = authTypes;
+const { signInError, signUpError, restoreSessionError, signOutError } =
+  messages;
 
 export const signUp = (email, password) => {
   return async (dispatch) => {
     try {
-      const { _tokenResponse: response } = await fbSignUp(
+      const { _tokenResponse: fbToken, user } = await fbSignUp(
         auth,
         email,
         password
       );
-      await setToken(response.idToken);
-      dispatch({
-        type: SIGN_UP,
-        userToken: response.idToken,
-        userId: response.localId,
-      });
+      if (user) {
+        const { uid, displayName, email } = user;
+        const userData = {
+          id: uid,
+          name: displayName ? displayName : "",
+          email: email ? email : "",
+        };
+        await addUserToDatabase(userData);
+        await setToken(user.uid);
+        dispatch({
+          type: SIGN_UP,
+          user: userData,
+          userToken: user.uid,
+        });
+      }
     } catch (error) {
-      console.log(`signUp error: ${error}`);
+      dispatch({
+        type: SHOW_AUTH_ERROR,
+        authError: signUpError,
+      });
     }
   };
 };
@@ -27,19 +57,30 @@ export const signUp = (email, password) => {
 export const signIn = (email, password) => {
   return async (dispatch) => {
     try {
-      const { _tokenResponse: response } = await fbSignIn(
+      const { _tokenResponse: fbToken, user } = await fbSignIn(
         auth,
         email,
         password
       );
-      await setToken(response.idToken);
-      dispatch({
-        type: SIGN_IN,
-        userToken: response.idToken,
-        userId: response.localId,
-      });
+      if (user) {
+        const { uid, displayName, email } = user;
+        const userData = {
+          id: uid,
+          name: displayName ? displayName : "",
+          email: email ? email : "",
+        };
+        await setToken(user.uid);
+        dispatch({
+          type: SIGN_IN,
+          user: userData,
+          userToken: user.uid,
+        });
+      }
     } catch (error) {
-      console.log(`signIn error: ${error}`);
+      dispatch({
+        type: SHOW_AUTH_ERROR,
+        authError: signInError,
+      });
     }
   };
 };
@@ -53,7 +94,10 @@ export const signOut = () => {
         type: SIGN_OUT,
       });
     } catch (error) {
-      console.log(`signOut error: ${error}`);
+      dispatch({
+        type: SHOW_AUTH_ERROR,
+        authError: signOutError,
+      });
     }
   };
 };
@@ -66,7 +110,35 @@ export const restoreSession = (token) => {
         userToken: token,
       });
     } catch (error) {
-      console.log(`restoreSession error: ${error}`);
+      dispatch({
+        type: SHOW_AUTH_ERROR,
+        authError: restoreSessionError,
+      });
+    }
+  };
+};
+
+export const hideAuthError = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: HIDE_AUTH_ERROR,
+      });
+    } catch (error) {
+      console.error(`hideAuthError error: ${error}`);
+    }
+  };
+};
+
+export const uploadProfileImage = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({
+        type: UPLOAD_PROFILE_IMAGE,
+        userProfileImage: true,
+      });
+    } catch (error) {
+      console.error(`uploadProfileImage error: ${error}`);
     }
   };
 };
