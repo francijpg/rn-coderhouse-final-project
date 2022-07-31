@@ -1,34 +1,22 @@
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
-import { useSelector } from "react-redux";
-import { signOut } from "../../store/actions/auth.actions";
-import { useDispatch } from "react-redux";
+import { View, TouchableOpacity, ImageBackground, Text } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { styles } from "./home.style";
+import { FontAwesome } from "@expo/vector-icons";
+import { colors } from "../../constants/colors";
+import { BgImage } from "../../components";
 
 const HomeScreen = () => {
-  const auth = useSelector((state) => state.auth);
   const navigation = useNavigation();
-  const dispatch = useDispatch();
-  // console.log(auth);
-  const handleSignOut = () => {
-    dispatch(signOut());
-  };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-      }}
-    >
-      <Text>Home Screen</Text>
-      <Text>{auth.userId}</Text>
-      <TouchableOpacity onPress={handleSignOut}>
-        <Text>Sign Out</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
-        <Text>Camera</Text>
+    <View style={styles.container}>
+      <BgImage />
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Chat")}
+        style={styles.chatButton}
+      >
+        <FontAwesome name="wechat" size={24} color={colors.lightGray} />
       </TouchableOpacity>
     </View>
   );
