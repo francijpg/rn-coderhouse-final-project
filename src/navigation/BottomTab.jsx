@@ -23,12 +23,12 @@ const BottomTab = () => {
         name="Home"
         component={MainStack}
         options={{
-          headerShown: false,
+          // headerShown: false,
           tabBarIcon: ({ color }) => (
             <FontAwesome name="home" size={28} color={color} />
           ),
           headerLeft: () => (
-            <Pressable onPress={() => navigation.navigate("Home")}>
+            <Pressable onPress={() => navigation.navigate("HomeStack")}>
               <FontAwesome
                 name="home"
                 size={25}
@@ -47,7 +47,7 @@ const BottomTab = () => {
             <FontAwesome name="user" size={28} color={color} />
           ),
           headerRight: () => (
-            <Pressable onPress={() => navigation.navigate("Settings")}>
+            <Pressable onPress={() => navigation.navigate("SettingsStack")}>
               <FontAwesome
                 name="cog"
                 size={25}
