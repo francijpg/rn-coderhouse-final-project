@@ -1,6 +1,6 @@
 # Chat-App
 
-## This is a simple chat application for the final project of the react native course taught by the coderhouse platform. At a technical and functional level, its characteristics include:
+### This is a simple chat application for the final project of the react native course taught by the coderhouse platform. At a technical and functional level, its characteristics include:
 
 ### Functional summary
 
