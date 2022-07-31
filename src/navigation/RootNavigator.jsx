@@ -2,8 +2,8 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 
-import MainStack from "./MainStack";
 import AuthStack from "./AuthStack";
+import BottomTab from "./BottomTab";
 import Splash from "../screens/splash/Splash";
 
 import { getToken } from "../utils/token";
@@ -27,7 +27,7 @@ export default function RootNavigator() {
         dispatch(restoreSession(null));
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
@@ -37,7 +37,7 @@ export default function RootNavigator() {
 
   return (
     <NavigationContainer>
-      {userToken ? <MainStack /> : <AuthStack />}
+      {userToken ? <BottomTab /> : <AuthStack />}
     </NavigationContainer>
   );
 }
