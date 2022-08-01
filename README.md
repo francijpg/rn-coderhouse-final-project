@@ -6,7 +6,7 @@
 
 1. Identify and register a user in the app through their email.
 2. Participate in an open chat, which identifies the origin from different accounts.
-3. Allows you to use your device's camera to update your profile picture.
+3. Allows you to use your device's camera (including front camera, back camera and flash options) to update your profile picture.
 
 ### Technical summary
 
